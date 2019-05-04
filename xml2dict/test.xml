@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<yodaodict>
+  <return-phrase><![CDATA[name]]></return-phrase>
+  <lang>eng</lang>
+  <dictcn-speach><![CDATA[name&type=1]]></dictcn-speach>
+  <speech><![CDATA[name&type=1]]></speech>
+  <uk-speech><![CDATA[name&type=1]]></uk-speech>
+  <us-speech><![CDATA[name&type=2]]></us-speech>
+  <phonetic-symbol>neɪm</phonetic-symbol>
+  <uk-phonetic-symbol>neɪm</uk-phonetic-symbol>
+  <us-phonetic-symbol>nem</us-phonetic-symbol>
+  <custom-translation>
+    <type>ec</type>
+    <translation>
+      <content><![CDATA[n. 名称，名字；姓名；名誉]]></content>
+    </translation>
+    <translation>
+      <content><![CDATA[adj. 姓名的；据以取名的]]></content>
+    </translation>
+    <translation>
+      <content><![CDATA[vt. 命名，任命；指定；称呼；提名；叫出]]></content>
+    </translation>
+    <translation>
+      <content><![CDATA[n. (Name)人名；(日)滑(姓)；(英)内姆]]></content>
+    </translation>
+  </custom-translation>
+  <yodao-web-dict>
+    <web-translation>
+      <key><![CDATA[code name]]></key>
+      <trans>
+        <value><![CDATA[代号]]></value>
+      </trans>
+      <trans>
+        <value><![CDATA[开发代号]]></value>
+      </trans>
+      <trans>
+        <value><![CDATA[产品代号]]></value>
+      </trans>
+    </web-translation>
+    <web-translation>
+      <key><![CDATA[Host name]]></key>
+      <trans>
+        <value><![CDATA[主机名]]></value>
+        <cls>
+          <cl><![CDATA[计]]></cl>
+        </cls>
+      </trans>
+      <trans>
+        <value><![CDATA[主机名称]]></value>
+      </trans>
+      <trans>
+        <value><![CDATA[主机的名称]]></value>
+      </trans>
+    </web-translation>
+    <web-translation>
+      <key><![CDATA[Part Name]]></key>
+      <trans>
+        <value><![CDATA[零件名称]]></value>
+      </trans>
+      <trans>
+        <value><![CDATA[名称]]></value>
+      </trans>
+      <trans>
+        <value><![CDATA[阀体]]></value>
+      </trans>
+    </web-translation>
+  </yodao-web-dict>
+  <sexp>0</sexp>
+</yodaodict>
