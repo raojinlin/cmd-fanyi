@@ -7,8 +7,8 @@ from xml2dict import parser as xml2dict
 
 
 class Translate:
-    translate_api = 'http://fanyi.youdao.com/translate'
-    dict_api = 'http://dict.youdao.com/fsearch'
+    DICT_API = 'http://dict.youdao.com/fsearch'
+    TRANSLATE_API = 'http://fanyi.youdao.com/translate'
 
     dict_params = {
         "client": "deskdict",
@@ -38,8 +38,8 @@ class Translate:
     user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " \
                  "Chrome/73.0.3683.86 Safari/537.36 "
 
-    def __init__(self, word: str):
-        self.word = quote(word)
+    def __init__(self):
+        self.word = ""
         self.xml_dom = None
         self._result = {}
 
@@ -69,7 +69,7 @@ class Translate:
         :return:
         """
         if text:
-            self.word = text
+            self.word = quote(text)
         req = Request(self.get_translate_url(True), headers={"User-Agent": self.user_agent})
         res = urlopen(req)
 
@@ -78,11 +78,11 @@ class Translate:
             self._result = xml2dict(self.xml_dom)
 
     def get_translate_url(self, translate=False):
-        api = self.dict_api
+        api = self.DICT_API
         params = self.dict_params
         if translate:
             self.translate_params["i"] = self.word
-            api = self.translate_api
+            api = self.TRANSLATE_API
             params = self.translate_params
         else:
             self.dict_params["q"] = self.word

@@ -40,9 +40,16 @@ def _parse(node, result):
     :type result dict
     :return: dict
     """
-    child_tag = [child.tag for child in list(node)]
-    dict_child = [child.tag for child in list(node) if len(list(child)) > 0]
-    list_child = list(filter(lambda tag: is_list_child(child_tag, tag), child_tag))
+    child_tag = []
+    dict_child = []
+
+    for ch in list(node):
+        child_tag.append(ch.tag)
+
+        if len(list(ch)) > 0:
+            dict_child.append(ch.tag)
+
+    list_child = filter(lambda tag: is_list_child(child_tag, tag), child_tag)
 
     if len(list(node)) == 0:
         node_text = node.text

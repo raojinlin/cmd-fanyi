@@ -1,11 +1,15 @@
 import sys
 import argparse
-from youdao.translate import Translate
+import re
 
-translate = Translate("")
 
+from youdao import Translate
+
+translate = Translate()
+CHINESE_REGEX = r'[\u4e00-\u9fa5]'
 
 def trans(args):
+    """句子翻译"""
     if type(args) is list:
         translate.translate(" ".join(args))
     else:
@@ -15,6 +19,7 @@ def trans(args):
 
 
 def query(args):
+    """单词翻译"""
     if type(args) is list:
         translate.query(" ".join(args))
     else:
@@ -27,10 +32,13 @@ if __name__ == '__main__':
     parser.add_argument("source", metavar="S", type=str, nargs="+", help="the source text")
 
     args = parser.parse_args()
-    if len(args.source) >= 4:
+    source_str = " ".join(args.source)
+    words = re.findall(r'\w+', source_str)
+
+    if re.match(CHINESE_REGEX, source_str):
+        words = re.findall(CHINESE_REGEX, source_str)
+
+    if len(words) >= 4:
         trans(args.source)
     else:
         query(args.source)
-
-
-

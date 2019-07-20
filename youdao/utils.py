@@ -24,6 +24,7 @@ def get_plain_text(text):
     :type text str
     :return: str
     """
-    if not text:
-        text = ""
+    if not text or not isinstance(text, str):
+        return ""
+
     return text.lstrip().replace("\n", "")
