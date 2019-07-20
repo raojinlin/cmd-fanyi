@@ -119,7 +119,10 @@ class Translate:
             res += "\n网络释义:\n"
             translation = self.web_interpretation()['web-translation']
             for item in translation:
-                res += "\t[%s]\n" % item['key']
+                if type(item) is not str:
+                    res += "\t[%s]\n" % item['key']
+                else:
+                    continue
                 if type(item['trans']) is list:
                     for t in item['trans']:
                         res += "\t\t%s\n" % get_plain_text(t['value'])
