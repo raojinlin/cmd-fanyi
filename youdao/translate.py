@@ -76,7 +76,6 @@ class Translate:
         if res.status == 200:
             self.xml_dom = xmlElementTree.parse(res)
             self._result = xml2dict(self.xml_dom)
-            print(self._result)
 
     def get_translate_url(self, translate=False):
         api = self.DICT_API
@@ -98,12 +97,32 @@ class Translate:
         key = 'yodao-web-dict'
         return self.get_result().get(key, None)
 
+    def get_phonetic_symbol(self):
+        key = 'phonetic-symbol'
+        uk_key = 'uk-' + key
+        us_key = 'us-' + key
+
+        en = self.get_result().get(us_key, "")
+        uk = self.get_result().get(uk_key, "")
+        res = ""
+
+        if en != "":
+            res += "    美式: \033[01m%s\033[0m\n" % en
+        if uk != "":
+            res += "    英式: \033[01m%s\033[0m\n" % uk
+
+        return res
+
     def get_translate_result(self):
         res = ''
         if 'translation' in self.get_result():
             # res += ("input: %s\n" % get_plain_text(self.get_result()['input']))
             res += ("%s\n" % get_plain_text(self.get_result()['translation']))
             return res
+
+        phonetic = self.get_phonetic_symbol()
+        if phonetic:
+            res += "发音:\n%s\n" % phonetic
 
         if self.english_chinese():
             res += "英汉翻译:\n"
@@ -133,7 +152,7 @@ class Translate:
         return res
 
     def __str__(self):
-        return "\033[33m%s\033[0m" % self.get_translate_result()
+        return "%s" % self.get_translate_result()
 
 
 if __name__ == '__main__':
