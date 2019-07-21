@@ -27,4 +27,4 @@ def get_plain_text(text):
     if not text or not isinstance(text, str):
         return ""
 
-    return text.lstrip().replace("\n", "")
+    return text.lstrip().replace("\n", "").replace("\r", "")

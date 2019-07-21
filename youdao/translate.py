@@ -76,6 +76,7 @@ class Translate:
         if res.status == 200:
             self.xml_dom = xmlElementTree.parse(res)
             self._result = xml2dict(self.xml_dom)
+            print(self._result)
 
     def get_translate_url(self, translate=False):
         api = self.DICT_API
@@ -113,22 +114,22 @@ class Translate:
                     cont = item['content']
                 else:
                     cont = trans1[item]
-                res += ("\t" + cont + "\n")
+                res += ("    " + cont + "\n")
 
         if self.web_interpretation():
             res += "\n网络释义:\n"
             translation = self.web_interpretation()['web-translation']
             for item in translation:
                 if type(item) is not str:
-                    res += "\t[%s]\n" % item['key']
+                    res += "    [%s]\n" % item['key']
                 else:
                     continue
                 if type(item['trans']) is list:
                     for t in item['trans']:
-                        res += "\t\t%s\n" % get_plain_text(t['value'])
+                        res += "        * %s\n" % get_plain_text(t['value'])
                 else:
                     for t in item['trans']:
-                        res += "\t\t%s\n" % get_plain_text(item['trans'][t])
+                        res += "        * %s\n" % get_plain_text(item['trans'][t])
         return res
 
     def __str__(self):
