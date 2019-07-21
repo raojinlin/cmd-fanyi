@@ -15,7 +15,7 @@ def is_list_child(tags, tag):
         if i > 1:
             return True
         if t == tag:
-            i += 1
+           i += 1 
     return i > 1
 
 
@@ -42,14 +42,17 @@ def _parse(node, result):
     """
     child_tag = []
     dict_child = []
+    list_child = [] # filter(lambda tag: is_list_child(child_tag, tag), child_tag)
 
-    for ch in list(node):
-        child_tag.append(ch.tag)
+    for child in list(node):
+        child_tag.append(child.tag)
 
-        if len(list(ch)) > 0:
-            dict_child.append(ch.tag)
+        if len(list(child)) > 0:
+            dict_child.append(child.tag)
 
-    list_child = filter(lambda tag: is_list_child(child_tag, tag), child_tag)
+    for tag in child_tag:
+        if is_list_child(child_tag, tag):
+            list_child.append(tag)
 
     if len(list(node)) == 0:
         node_text = node.text
