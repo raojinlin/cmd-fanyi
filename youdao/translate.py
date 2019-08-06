@@ -1,3 +1,6 @@
+import json
+import os
+import sys
 import xml.etree.ElementTree as xmlElementTree
 
 from youdao.utils import QueryString, get_plain_text
@@ -45,6 +48,18 @@ class Translate:
 
     def get_result(self):
         return self._result
+
+    def serialize(self, indent=4):
+        return json.dumps(self.get_result(), indent=indent)
+
+    def save(self, path):
+        if os.path.exists(path):
+            sys.stderr.write("The output file: '%s' already exists.\n" %
+                             os.path.realpath(os.path.join(os.path.curdir, path)))
+            sys.exit(127)
+
+        with open(os.path.realpath(path), "at") as output:
+            output.write(json.dumps(self.get_result()))
 
     def query(self, word=""):
         """
@@ -156,7 +171,7 @@ class Translate:
 
 
 if __name__ == '__main__':
-    trans = Translate("test")
+    trans = Translate()
     trans.query()
     print(trans)
 
