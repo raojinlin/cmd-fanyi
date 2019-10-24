@@ -93,7 +93,7 @@ class BaiduRequest(AbstractRequest):
 
         simple_means = format_simple_means(dict_result)
         oxford_entry = format_oxford_entry(oxford)
-        oxford_unbox =  format_oxford_unbox(oxford)
+        oxford_unbox = format_oxford_unbox(oxford)
         collins_text = format_collins(collins)
 
         text += with_new_line(simple_means)
