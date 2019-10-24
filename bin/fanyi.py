@@ -19,10 +19,10 @@ if __name__ == '__main__':
         sys.stdout.write("v0.1\n")
         sys.exit(0)
 
-    youdao = translate.requestFactory.get_instance(args.engine or 'youdao')
-    youdao.query(source_str)
+    translater = translate.requestFactory.get_instance(args.engine or 'youdao')
+    translater.query(source_str)
 
     if args.json:
-        sys.stdout.write(youdao.serialize())
+        sys.stdout.write(translater.serialize())
     else:
-        print(youdao.format())
+        print(translater.format())
