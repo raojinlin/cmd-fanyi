@@ -11,6 +11,7 @@ from translate.util.baidu_response_format import format_collins
 from translate.util.baidu_response_format import format_simple_means
 from translate.util.baidu_response_format import format_oxford_entry
 from translate.util.baidu_response_format import format_oxford_unbox
+from translate.util.baidu_response_format import format_trans_result
 from translate.util.baidu_response_format import with_new_line
 
 class BaiduRequest(AbstractRequest):
@@ -28,6 +29,11 @@ class BaiduRequest(AbstractRequest):
         self.headers = {'User-Agent': self.user_agent, 'x-requested-with': 'XMLHttpRequest'}
         self._result = None
 
+        self.langs = {
+            "from": 'en',
+            "to": 'zh'
+        }
+
     def get_param(self, query, fm="en", to="zh"):
         param =  {
             "from": fm,
@@ -39,7 +45,7 @@ class BaiduRequest(AbstractRequest):
             "token": self.token
         }
 
-        # param.update(self.query_param)
+        param.update(self.langs)
 
         return param
 
@@ -62,11 +68,32 @@ class BaiduRequest(AbstractRequest):
         _, gtk = self.get_token_and_gtk()
         return text_sign(text, gtk)
 
+    def lang_decete(self, text):
+        print('decete lang...')
+
+        f = ''
+        try:
+            resp = requests.post(self.api_lan_detect, headers=self.headers, data={'query': text})
+            content = resp.content.decode('utf-8')
+            result = json.loads(content)
+            f = result.get('lan', 'en') 
+        except:
+            f = 'en'
+
+        self.langs['from'] = f
+
+        print('form lang: %s' % f)
+        if f == 'en':
+            self.langs['to'] = 'zh'
+        else:
+            self.langs['to'] = 'en'
+
     def query(self, text):
         if self._last_query == text:
             return self
 
         self._last_query = text
+        self.lang_decete(text)
         param = self.get_param(text)
         resp = requests.post(self.api, headers=self.headers, data=param)
 
@@ -87,7 +114,7 @@ class BaiduRequest(AbstractRequest):
             return ""
 
         text = ''
-        dict_result = result.get('dict_result')
+        dict_result = result.get('dict_result', {})
         oxford = dict_result.get('oxford')
         collins = dict_result.get('collins')
 
@@ -100,5 +127,8 @@ class BaiduRequest(AbstractRequest):
         text += with_new_line(oxford_entry)
         text += with_new_line(oxford_unbox)
         text += with_new_line(collins_text)
+
+        if 'dict_result' not in result:
+            text += with_new_line(format_trans_result(result.get('trans_result')))
 
         return text
