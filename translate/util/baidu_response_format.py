@@ -3,11 +3,13 @@
 import re
 import json
 
-__all__ = ['format_simple_means', 'format_oxford_entry', 'format_oxford_unbox', 'format_collins', 'with_new_line', 'format_trans_result']
+__all__ = ['format_simple_means', 'format_oxford_entry', 'format_oxford_unbox',
+           'format_collins', 'with_new_line', 'format_trans_result', 'format_liju_double']
 
 
 def indent(level=4):
     return " " * level
+
 
 def format_examples(examples):
     text = ''
@@ -52,7 +54,7 @@ def format_simple_means(result):
         return ''
 
     symbols = simple_means.get('symbols')
-    text = bold_title('简明释义')  + "\n"
+    text = bold_title('简明释义') + "\n"
 
     def format_means(means):
         s = ''
@@ -65,7 +67,6 @@ def format_simple_means(result):
             elif type(mean) is str:
                 s += mean + ';'
         return s
-
 
     for symbol in symbols:
         parts = symbol.get('parts', '')
@@ -181,22 +182,20 @@ def format_collins(collins):
     return text
 
                         
-def format_entrys(entrys):
-    if not entrys:
+def format_entrys(entry):
+    if not entry:
         return ""
-    # frequence = collins.get('frequence')
-    # entrys = collins.get('entry', [])
     text = ''
 
-    for n, entry in enumerate(entrys):
-        if entry.get('type') != 'mean':
+    for n, item in enumerate(entry):
+        if item.get('type') != 'mean':
             continue
 
-        values = entry.get('value', [])
+        values = item.get('value', [])
         for value in values:
             define = value.get('def')
             trans = value.get('tran')
-            means =  value.get('mean_type')
+            means = value.get('mean_type')
 
             posp = " ".join(map(lambda item: item.get('label'), value.get('posp', [])))
 
@@ -215,7 +214,7 @@ def format_entrys(entrys):
                     for pos in posc:
                         examples = pos.get('example')
                         define = pos.get('def', '')
-                        text += define + '\n'
+                        text += replace_html_blod(define) + '\n'
 
                         text += format_examples(examples)
     return text
@@ -240,13 +239,14 @@ def format_trans_result(result):
 
     return text
 
+
 def format_liju_double(double_data):
     text = ""
 
     for data in double_data:
         ch_text_list, en_text_list, provider, _ = data
         ch_text = " ".join(map(lambda item: item[0], ch_text_list))
-        en_text = "".join(map(lambda item: item[0], en_text_list))
+        en_text = " ".join(map(lambda item: item[0], en_text_list))
 
         text += with_new_line(ch_text)
         text += with_new_line(en_text)

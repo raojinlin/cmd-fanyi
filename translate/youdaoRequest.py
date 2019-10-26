@@ -11,7 +11,7 @@ from xml2dict import parser as xml2dict
 
 class YoudaoRequest(AbstractRequest):
     def __init__(self):
-        super(AbstractRequest, self).__init__()
+        super(AbstractRequest).__init__()
 
         self.keyfrom = 'chrome.extension'
         self.doctype = 'xml'
@@ -120,7 +120,7 @@ class YoudaoRequest(AbstractRequest):
 
         return res
 
-    def format(self):
+    def format(self, verbose=0):
         if 'translation' in self.get_result():
             return "%s\n" % get_plain_text(self.get_result().get('translation'))
 
@@ -140,7 +140,7 @@ class YoudaoRequest(AbstractRequest):
                     cont = trans1[item]
                 res += ("    " + cont + "\n")
 
-        if self.get_web_interpretation():
+        if self.get_web_interpretation() and verbose >= 1:
             res += "\n网络释义:\n"
             translation = self.get_web_interpretation().get('web-translation')
             for item in translation:
