@@ -11,7 +11,7 @@ from xml2dict import parser as xml2dict
 
 class YoudaoRequest(AbstractRequest):
     def __init__(self):
-        super(AbstractRequest).__init__()
+        super().__init__()
 
         self.keyfrom = 'chrome.extension'
         self.doctype = 'xml'
@@ -81,7 +81,7 @@ class YoudaoRequest(AbstractRequest):
 
         self._last_query = text 
         chinese_regex = r'[\u4e00-\u9fa5]'
-        words = re.findall('\w+', text)
+        words = re.findall(r'\w+', text)
 
         if re.match(chinese_regex, text):
             words = re.findall(chinese_regex, text)

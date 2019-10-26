@@ -1,5 +1,4 @@
-# encoding: utf-8
-
+# encoding: utf-8 import re
 import re
 import requests
 import json
@@ -45,22 +44,21 @@ class BaiduRequest(AbstractRequest):
         return param
 
     def get_token_and_gtk(self):
-        if self.token != "" and self.gtk != "":
-            return self.token, self.gtk
-
         resp = requests.get(self.api_home, headers=self.headers)
         content = resp.content.decode('utf-8')
         token = re.findall(r'token: (.*)', content)[0]
         gtk = re.findall(r'gtk = (.\d+\.\d+.)', content)[0]
 
-        self.gtk = gtk.replace("'", "")
-        self.token = token.replace("'", "").replace(',', '')
+        gtk = gtk.replace("'", "")
+        token = token.replace("'", "").replace(',', '')
 
-        return self.token, self.gtk
+        return gtk, token
 
     def sign(self, text):
-        _, gtk = self.get_token_and_gtk()
-        return text_sign(text, gtk)
+        if not self.token or not self.gtk:
+            self.gtk, self.token = self.get_token_and_gtk()
+
+        return text_sign(text, self.gtk)
 
     def query(self, text):
         if self._last_query == text:
@@ -98,18 +96,17 @@ class BaiduRequest(AbstractRequest):
         if verbose >= 1:
             text += with_new_line(format_oxford_entry(oxford))
 
-            if verbose >= 2:
-                text += with_new_line(format_oxford_unbox(oxford))
+        if verbose >= 2:
+            text += with_new_line(format_oxford_unbox(oxford))
 
-            if verbose >= 3:
-                text += with_new_line(format_collins(collins))
+        if verbose >= 3:
+            text += with_new_line(format_collins(collins))
 
-                if verbose >= 4:
-                    if double_str:
-                        double_text = format_liju_double(json.loads(double_str))
-                        text += with_new_line(double_text)
+        if verbose >= 4 and double_str:
+            double_text = format_liju_double(json.loads(double_str))
+            text += double_text
 
         if 'dict_result' not in result:
-            text += with_new_line(format_trans_result(result.get('trans_result')))
+            text += format_trans_result(result.get('trans_result'))
 
         return text

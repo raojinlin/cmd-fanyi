@@ -2,6 +2,8 @@ import sys
 import argparse
 import translate
 
+from translate.util.lang import lang_detect
+
 __version__ = '0.0.1'
 
 if __name__ == '__main__':
@@ -11,17 +13,22 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser("Command line translator")
     parser.add_argument("source", metavar="S", type=str, nargs="+", help="Text to be translated")
     parser.add_argument("--json", action="store_true", help="Output JSON, independent of verbose parameter")
-    parser.add_argument('--engine', metavar="E", type=str, nargs='?', const=DEFAULT_TRANSLATE,
+    parser.add_argument('--engine', metavar="E", type=str, nargs='?', default=DEFAULT_TRANSLATE,
                         help="Specify a translation engine, default: %s" % DEFAULT_TRANSLATE)
-    parser.add_argument('--trans-from', metavar='F', type=str, nargs='?', const='en', help='Specify the language to be '
-                                                                                           'translated')
-    parser.add_argument('--trans-to', metavar='T', type=str, nargs='?', const='zh', help='Specify which language to '
-                                                                                         'translate to')
+    parser.add_argument('--detect', action="store_true", help='Language detection and exit')
+    parser.add_argument('--trans-from', metavar='F', type=str, nargs='?', default='en',
+                        help='Specify the language to be translated. baidu translate only')
+    parser.add_argument('--trans-to', metavar='T', type=str, nargs='?', default='zh',
+                        help='Specify which language to translate to. baidu translate only')
     parser.add_argument('--verbose', '-v', action="count", help='Show details')
     parser.add_argument('--version', '-V', action='version', version='%(prog)s ' + __version__)
 
     args = parser.parse_args()
     source_str = " ".join(args.source)
+
+    if args.detect is True:
+        print(lang_detect(source_str))
+        sys.exit(0)
 
     translater = translate.requestFactory.get_instance(args.engine or DEFAULT_TRANSLATE)
 

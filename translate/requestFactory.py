@@ -1,8 +1,9 @@
 from translate.youdaoRequest import YoudaoRequest
 from translate.baiduRequest import BaiduRequest
+from translate.abstratRequest import AbstractRequest
 
 
-def get_instance(request):
+def get_instance(request) -> AbstractRequest:
     if request == 'youdao':
         return YoudaoRequest()
     elif request == 'baidu':
