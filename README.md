@@ -8,7 +8,7 @@
 
 ### Screenshot
 
-![simple means](./resources/screenhot/simple_means.png)
-![oxford](./resources/screenhot/oxford.png)
-![collins](./resources/screenhot/collins.png)
-![liju](./resources/screenhot/double_liju.png)
+![simple means](./resources/screenshot/simple_means.png)
+![oxford](./resources/screenshot/oxford.png)
+![collins](./resources/screenshot/collings.png)
+![liju](./resources/screenshot/double_liju.png)
