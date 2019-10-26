@@ -240,12 +240,30 @@ def format_trans_result(result):
 
     return text
 
+def format_liju_double(double_data):
+    text = ""
+
+    for data in double_data:
+        ch_text_list, en_text_list, provider, _ = data
+        ch_text = " ".join(map(lambda item: item[0], ch_text_list))
+        en_text = "".join(map(lambda item: item[0], en_text_list))
+
+        text += with_new_line(ch_text)
+        text += with_new_line(en_text)
+        text += '\033[2m' + provider + '\033[0m\n\n'
+
+    if text != "":
+        text = bold_title("双语例句:\n\n") + text
+
+    return text
+
 
 if __name__ == '__main__':
     content = open('./baidu_response.json', 'rt').read()
     resp = json.loads(content)
     dict_result = resp.get('dict_result', {})
     oxford = dict_result.get('oxford', {})
+    double_liju = resp.get('liju_result').get('double')
 
     print(format_simple_means(dict_result))
     print(format_oxford_entry(oxford))
@@ -253,4 +271,6 @@ if __name__ == '__main__':
     print(format_collins(dict_result.get('collins')))
     if 'dict_result' not in resp:
         print(format_trans_result(resp.get('trans_result')))
+
+    print(resp.get('liju_result').get('double'))
 

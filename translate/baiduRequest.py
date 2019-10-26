@@ -13,6 +13,7 @@ from translate.util.baidu_response_format import format_oxford_entry
 from translate.util.baidu_response_format import format_oxford_unbox
 from translate.util.baidu_response_format import format_trans_result
 from translate.util.baidu_response_format import with_new_line
+from translate.util.baidu_response_format import format_liju_double
 
 class BaiduRequest(AbstractRequest):
     def __init__(self):
@@ -69,7 +70,7 @@ class BaiduRequest(AbstractRequest):
         return text_sign(text, gtk)
 
     def lang_decete(self, text):
-        print('decete lang...')
+        print('detecting lang...')
 
         f = ''
         try:
@@ -117,16 +118,20 @@ class BaiduRequest(AbstractRequest):
         dict_result = result.get('dict_result', {})
         oxford = dict_result.get('oxford')
         collins = dict_result.get('collins')
+        liju_result = result.get('liju_result', {})
+        double = json.loads(liju_result.get('double', '[]'))
 
         simple_means = format_simple_means(dict_result)
         oxford_entry = format_oxford_entry(oxford)
         oxford_unbox = format_oxford_unbox(oxford)
         collins_text = format_collins(collins)
+        double_text = format_liju_double(double)
 
         text += with_new_line(simple_means)
         text += with_new_line(oxford_entry)
         text += with_new_line(oxford_unbox)
         text += with_new_line(collins_text)
+        text += with_new_line(double_text)
 
         if 'dict_result' not in result:
             text += with_new_line(format_trans_result(result.get('trans_result')))
