@@ -8,9 +8,24 @@
 * 有道翻译
 * 百度翻译
 
-### Screenshot
+### 安装
 
-![simple means](./resources/screenshot/simple_means.png)
-![oxford](./resources/screenshot/oxford.png)
-![collins](./resources/screenshot/collings.png)
-![liju](./resources/screenshot/double_liju.png)
+* 下载代码
+
+```shell
+$ git clone git@github.com:raojinlin/cmd-fanyi.git
+```
+
+* 设置PYTHONPATH
+
+```shell
+$ cd cmd-fanyi
+$ export PYTHONPATH=`pwd`
+```
+
+* 安装依赖
+
+```shell
+$ cd cmd-fanyi
+$ pip3 install -r requirements.txt
+```
