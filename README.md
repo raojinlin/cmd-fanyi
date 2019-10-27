@@ -1,5 +1,7 @@
 ## 命令行翻译工具
 
+[![asciicast](https://asciinema.org/a/277253.svg)](https://asciinema.org/a/277253)
+
 > 中文->英文，英文->中文
 
 ### 翻译api: 
