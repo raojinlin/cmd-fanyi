@@ -1,6 +1,8 @@
 import requests
 import json
 
+from os import path
+
 
 def lang_detect(text):
     try:
@@ -15,3 +17,20 @@ def lang_detect(text):
         return result.get('lan', 'en')
     except Exception as _:
         return 'en'
+
+
+def get_lang_obj():
+    with open(path.join(path.dirname(__file__), '../../resources/countries.json'), 'rt') as json_file:
+        return json.loads(json_file.read())
+
+
+def exists_lang(lang):
+    return lang in get_lang_obj()
+
+
+def list_supported_lang():
+    lang = get_lang_obj()
+
+    for code in lang:
+        print(code, lang[code])
+
