@@ -1,0 +1,70 @@
+{
+   "uk-phonetic-symbol" : "həˈləʊ",
+   "sexp" : "0",
+   "speech" : "hello&type=1",
+   "uk-speech" : "hello&type=1",
+   "custom-translation" : {
+      "type" : "ec",
+      "translation" : [
+         {
+            "content" : "int. 喂；哈罗，你好，您好"
+         },
+         {
+            "content" : "n. 表示问候， 惊奇或唤起注意时的用语"
+         },
+         {
+            "content" : "n. (Hello) 人名；（法）埃洛"
+         }
+      ]
+   },
+   "phonetic-symbol" : "həˈləʊ",
+   "us-speech" : "hello&type=2",
+   "return-phrase" : "hello",
+   "yodao-web-dict" : {
+      "web-translation" : [
+         {
+            "trans" : [
+               {
+                  "value" : "你好\n\t\t  "
+               },
+               {
+                  "value" : "您好\n\t\t  "
+               },
+               {
+                  "value" : "哈啰\n\t\t  "
+               }
+            ],
+            "key" : "Hello"
+         },
+         {
+            "key" : "Hello Kitty",
+            "trans" : [
+               {
+                  "value" : "凯蒂猫\n\t\t  "
+               },
+               {
+                  "value" : "昵称\n\t\t  "
+               },
+               {
+                  "value" : "吉蒂猫\n\t\t  "
+               }
+            ]
+         },
+         {
+            "trans" : [
+               {
+                  "value" : "哈乐哈乐\n\t\t  "
+               },
+               {
+                  "value" : "乐扣乐扣\n\t\t  "
+               }
+            ],
+            "key" : "Hello Bebe"
+         }
+      ],
+      "@same" : "true"
+   },
+   "lang" : "eng",
+   "dictcn-speach" : "hello&type=1",
+   "us-phonetic-symbol" : "helˈō"
+}
