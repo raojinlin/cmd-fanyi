@@ -1,8 +1,8 @@
 # encoding: utf-8
 
 
-class AbstractRequest(object):
-    """抽象翻译请求"""
+class Translator(object):
+    """翻译器抽象类"""
 
     user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) " \
                  "Chrome/73.0.3683.86 Safari/537.36 "
@@ -36,6 +36,9 @@ class AbstractRequest(object):
     def set_trans_to(self, trans_to):
         """翻译到哪个语种"""
         self.trans_to = trans_to
+
+    def get_name(self):
+        return ""
 
 
 class MethodNotImplementedException(Exception):

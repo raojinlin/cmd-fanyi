@@ -29,3 +29,11 @@ $ export PYTHONPATH=`pwd`
 $ cd cmd-fanyi
 $ pip3 install -r requirements.txt
 ```
+
+Changelog
+--
+
+* 2020-06-14
+    1. 代码重构
+    2. 添加控制台
+    3. 修复百度翻译授权(支持cookie传入)

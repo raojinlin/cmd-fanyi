@@ -3,19 +3,13 @@ import re
 import requests
 import json
 
-from translate.abstratRequest import AbstractRequest
+from translate.translator import Translator
 from translate.util.sign import PyJsHoisted_sign_ as text_sign
 
-from translate.util.baidu_response_format import format_collins
-from translate.util.baidu_response_format import format_simple_means
-from translate.util.baidu_response_format import format_oxford_entry
-from translate.util.baidu_response_format import format_oxford_unbox
-from translate.util.baidu_response_format import format_trans_result
-from translate.util.baidu_response_format import with_new_line
-from translate.util.baidu_response_format import format_liju_double
+from translate.util.formatBuilder import BaiduFormatBuilder
 
 
-class BaiduRequest(AbstractRequest):
+class Baidu(Translator):
     def __init__(self):
         super().__init__()
 
@@ -27,8 +21,14 @@ class BaiduRequest(AbstractRequest):
         self.api_home = "https://fanyi.baidu.com/"
         self.api_lan_detect = 'https://fanyi.baidu.com/langdetect'
 
-        self.headers = {'User-Agent': self.user_agent, 'x-requested-with': 'XMLHttpRequest'}
         self._result = None
+        self._response = None
+
+        self.session = requests.session()
+        self.session.headers = {'User-Agent': self.user_agent, 'x-requested-with': 'XMLHttpRequest'}
+
+    def set_cookie(self, cookie):
+        self.session.headers['Cookie'] = cookie
 
     def get_param(self, query):
         param = {
@@ -37,14 +37,14 @@ class BaiduRequest(AbstractRequest):
             "query": query,
             "transtype": "translang",
             "simple_means_flag": 3,
-            "sign": self.sign(query),
+            "sign": self.sign(query).value,
             "token": self.token
         }
 
         return param
 
     def get_token_and_gtk(self):
-        resp = requests.get(self.api_home, headers=self.headers)
+        resp = self.session.get(self.api_home)
         content = resp.content.decode('utf-8')
         token = re.findall(r'token: (.*)', content)[0]
         gtk = re.findall(r'gtk = (.\d+\.\d+.)', content)[0]
@@ -66,10 +66,11 @@ class BaiduRequest(AbstractRequest):
 
         self._last_query = text
         param = self.get_param(text)
-        resp = requests.post(self.api, headers=self.headers, data=param)
+        resp = self.session.post(self.api, data=param)
 
         content = resp.content.decode('utf-8')
         self._result = json.loads(content)
+        self._response = resp
 
         return self
 
@@ -79,34 +80,40 @@ class BaiduRequest(AbstractRequest):
     def serialize(self):
         return json.dumps(self.get_result())
 
+    def __str__(self):
+        return self.format(6)
+
     def format(self, verbose=0):
         result = self.get_result()
         if result is None:
             return ""
 
-        text = ''
         dict_result = result.get('dict_result', {})
         oxford = dict_result.get('oxford')
         collins = dict_result.get('collins')
         liju_result = result.get('liju_result', {})
         double_str = liju_result.get('double')
 
-        text += with_new_line(format_simple_means(dict_result))
+        builder = BaiduFormatBuilder()
+
+        builder.of_simple_means(dict_result)
 
         if verbose >= 1:
-            text += with_new_line(format_oxford_entry(oxford))
+            builder.of_oxford_entry(oxford)
 
         if verbose >= 2:
-            text += with_new_line(format_oxford_unbox(oxford))
+            builder.of_oxford_unbox(oxford)
 
         if verbose >= 3:
-            text += with_new_line(format_collins(collins))
+            builder.of_collins(collins)
 
         if verbose >= 4 and double_str:
-            double_text = format_liju_double(json.loads(double_str))
-            text += double_text
+            builder.of_double(json.loads(double_str))
 
         if 'dict_result' not in result:
-            text += format_trans_result(result.get('trans_result'))
+            builder.of_trans_result(result.get('trans_result'))
 
-        return text
+        return builder.get_result()
+
+    def get_name(self):
+        return "Baidu"

@@ -1,8 +1,5 @@
 # encoding: utf-8
 
-import re
-import json
-
 __all__ = ['format_simple_means', 'format_oxford_entry', 'format_oxford_unbox',
            'format_collins', 'with_new_line', 'format_trans_result', 'format_liju_double']
 
@@ -75,7 +72,7 @@ def format_simple_means(result):
         
         text += "%s %s\n" % (ph_am, ph_en)
         for part in parts:
-            line = part.get('part', '')  + format_means(part.get('means'))
+            line = part.get('part', '') + format_means(part.get('means'))
             text += line + "\n"
 
     return text
@@ -128,7 +125,6 @@ def format_oxford_unbox(oxford):
 
     for box in unbox:
         box_type = box.get('type')
-        box_name = box.get('name')
         box_data = box.get('data', [])
 
         if box_type == 'more_about':
@@ -259,20 +255,4 @@ def format_liju_double(double_data):
 
     return text
 
-
-if __name__ == '__main__':
-    content = open('../../resources/baidu_response.json', 'rt').read()
-    resp = json.loads(content)
-    dict_result = resp.get('dict_result', {})
-    oxford = dict_result.get('oxford', {})
-    double_liju = resp.get('liju_result').get('double')
-
-    print(format_simple_means(dict_result))
-    print(format_oxford_entry(oxford))
-    print(format_oxford_unbox(oxford))
-    print(format_collins(dict_result.get('collins')))
-    if 'dict_result' not in resp:
-        print(format_trans_result(resp.get('trans_result')))
-
-    print(format_liju_double(json.loads(double_liju)))
 

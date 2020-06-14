@@ -4,12 +4,13 @@ import xml.etree.ElementTree as xmlElementTree
 
 from urllib import request
 from urllib import parse
-from translate.utils import QueryString, get_plain_text
-from translate.abstratRequest import AbstractRequest
+from translate.util import QueryString
+from translate.translator import Translator
 from xml2dict import parser as xml2dict
+from translate.util.formatBuilder import YoudaoFormatBuilder
 
 
-class YoudaoRequest(AbstractRequest):
+class Youdao(Translator):
     def __init__(self):
         super().__init__()
 
@@ -108,52 +109,25 @@ class YoudaoRequest(AbstractRequest):
     def get_web_interpretation(self):
         return self.get_result().get('yodao-web-dict')
 
-    def get_phonetic_symbol(self):
-        en = self.get_result().get("us-phonetic-symbol", "")
-        uk = self.get_result().get("uk-phonetic-symbol", "")
-
-        res = ""
-        if en != "":
-            res += "    美式: \033[01m%s\033[0m\n" % en
-        if uk != "":
-            res += "    英式: \033[01m%s\033[0m\n" % uk
-
-        return res
-
     def format(self, verbose=0):
+        builder = YoudaoFormatBuilder()
         if 'translation' in self.get_result():
-            return "%s\n" % get_plain_text(self.get_result().get('translation'))
+            builder.of_translation(self.get_result().get('translation'))
 
-        res = ''
-        phonetic = self.get_phonetic_symbol()
-        if phonetic:
-            res += "发音:\n%s\n" % phonetic
+        builder.of_phonetic_symbol(
+            self.get_result().get("us-phonetic-symbol", ""),
+            self.get_result().get("uk-phonetic-symbol", "")
+        )
 
         if self.get_english_chinese():
-            res += "英汉翻译:\n"
-            trans1 = self.get_english_chinese()['translation']
-            for item in trans1:
-                cont = ''
-                if type(item) is dict:
-                    cont = item['content']
-                else:
-                    cont = trans1[item]
-                res += ("    " + cont + "\n")
+            builder.of_english_chinese(self.get_english_chinese())
 
         if self.get_web_interpretation() and verbose >= 1:
-            res += "\n网络释义:\n"
-            translation = self.get_web_interpretation().get('web-translation')
-            for item in translation:
-                if type(item) is not str:
-                    res += "    [%s]\n" % item['key']
-                else:
-                    continue
-                for t in item['trans']:
-                    if type(item['trans']) is list:
-                        res += "        * %s\n" % get_plain_text(t['value'])
-                    else:
-                        res += "        * %s\n" % get_plain_text(item['trans'][t])
-        return res
+            builder.of_web_interpretation(self.get_web_interpretation().get('web-translation'))
 
+        return builder.get_result()
+
+    def get_name(self):
+        return "Youdao"
 
 
