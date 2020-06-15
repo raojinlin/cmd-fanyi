@@ -1,10 +1,10 @@
-# encoding: utf-8 import re
+# encoding: utf-8
 import re
 import requests
 import json
 
 from translate.translator import Translator
-from translate.util.sign import PyJsHoisted_sign_ as text_sign
+from translate.util.baidu_sign import generate_token
 
 from translate.util.formatBuilder import BaiduFormatBuilder
 
@@ -37,7 +37,7 @@ class Baidu(Translator):
             "query": query,
             "transtype": "translang",
             "simple_means_flag": 3,
-            "sign": self.sign(query).value,
+            "sign": self.sign(query),
             "token": self.token
         }
 
@@ -58,7 +58,7 @@ class Baidu(Translator):
         if not self.token or not self.gtk:
             self.gtk, self.token = self.get_token_and_gtk()
 
-        return text_sign(text, self.gtk)
+        return generate_token(text, self.gtk)
 
     def query(self, text):
         if self._last_query == text:
