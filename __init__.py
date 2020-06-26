@@ -1,3 +1,5 @@
+from translate import __version__
+
 name = "cmd_fanyi"
 
-version = '0.01'
+version = __version__

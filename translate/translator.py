@@ -19,7 +19,7 @@ class Translator(object):
         """单词或文本翻译接口
         @return self
         """
-        raise MethodNotImplementedException("subclass of AbstractRequest method query not implemented.")
+        return self
 
     def serialize(self, *args, **kwargs):
         """序列化"""
