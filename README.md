@@ -2,32 +2,19 @@
 
 [![asciicast](https://asciinema.org/a/277253.svg)](https://asciinema.org/a/277253)
 
-> 中文->英文，英文->中文
 
-### 翻译api: 
-* 有道翻译
-* 百度翻译
+### API:
+* Youdao
+* Baidu
 
-### 安装
+### Install
 
-* 下载代码
-
-```shell
-$ git clone git@github.com:raojinlin/cmd-fanyi.git
+```bash
+$ sudo python3 setup.py install
 ```
 
-* 设置PYTHONPATH
-
-```shell
-$ cd cmd-fanyi
-$ export PYTHONPATH=`pwd`
-```
-
-* 安装依赖
-
-```shell
-$ cd cmd-fanyi
-$ pip3 install -r requirements.txt
+```bash
+$ pip3 install cmd-fanyi
 ```
 
 Changelog

@@ -64,5 +64,7 @@ if __name__ == '__main__':
     translator.query(text)
     if args.json:
         sys.stdout.write(translator.serialize())
-    else:
+    elif args.text:
         print(translator.format(verbose=(args.verbose or DEFAULT_VERBOSE)))
+    else:
+        parser.print_help()
