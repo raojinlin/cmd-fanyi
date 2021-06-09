@@ -45,6 +45,10 @@ class Baidu(Translator):
 
     def get_token_and_gtk(self):
         resp = self.session.get(self.api_home)
+        baidu_uid = resp.cookies.get('BAIDUID')
+        if baidu_uid:
+            self.set_cookie('BAIDUID=%s' % baidu_uid)
+        resp = self.session.get(self.api_home)
         content = resp.content.decode('utf-8')
         token = re.findall(r'token: (.*)', content)[0]
         gtk = re.findall(r'gtk = (.\d+\.\d+.)', content)[0]

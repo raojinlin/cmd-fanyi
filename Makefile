@@ -16,4 +16,4 @@ upload:
 			twine upload --repository pypi dist/* --verbose
 
 check:
-			twine check dist/*
+			python3 -m twine check dist/*

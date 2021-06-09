@@ -8,7 +8,7 @@ from translate.baidu import Baidu
 from translate.util.lang import lang_detect, list_supported_lang
 
 
-if __name__ == '__main__':
+def main():
     DEFAULT_TRANSLATE = 'baidu'
     DEFAULT_VERBOSE = 0
 
@@ -23,8 +23,7 @@ if __name__ == '__main__':
                         help='Specify the language to be translated. baidu translator only')
     parser.add_argument('--trans-to', metavar='T', type=str, nargs='?', default='zh',
                         help='Specify which language to translate to. baidu translator only')
-    parser.add_argument('--cookie', '-C', metavar='cookie', type=str, help='The cookie for http request, "baidu" '
-                                                                           'required.')
+    parser.add_argument('--cookie', '-C', metavar='cookie', type=str, help='The cookie for http request, "baidu" ')
     parser.add_argument('--list', '-L', action='store_true', help='List supported lang and exit')
     parser.add_argument('--console', '-c', action='store_true', help='open console')
     parser.add_argument('--verbose', '-v', action="count", help='Verbose')
@@ -68,3 +67,12 @@ if __name__ == '__main__':
         print(translator.format(verbose=(args.verbose or DEFAULT_VERBOSE)))
     else:
         parser.print_help()
+
+
+if __name__ == '__main__':
+    try:
+        main()
+    except KeyboardInterrupt as keywordInterrupt:
+        print("Bey")
+    except EOFError as eofError:
+        print("Bey")

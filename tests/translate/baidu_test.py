@@ -23,4 +23,4 @@ class BaiduTest(unittest.TestCase):
 
     def test_translate(self):
         baidu.query('be conservative in what you do, be liberal in what you accept from others.')
-        self.assertTrue('做事要保守，接受别人的东西要开明。' in baidu.format())
+        self.assertNotIn('errmsg', baidu.get_result())
