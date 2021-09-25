@@ -4,7 +4,7 @@ from .util import get_plain_text
 from .translator import Translator
 
 __all__ = ['Translator', 'get_plain_text', 'get_translator', 'console', '__version__']
-__version__ = '0.0.3'
+__version__ = '0.0.4'
 
 
 class ConsoleCommand(object):
